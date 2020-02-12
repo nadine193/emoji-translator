@@ -1,5 +1,8 @@
 package com.emoji.translator;
 
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.springframework.context.annotation.Bean;
@@ -11,7 +14,24 @@ import com.emoji.translator.core.EmojiResource;
 public class EmojiTranslatorConfig {
 
 	@Bean
-	public EmojiResource emojiResource() {
-		return new EmojiResource(Paths.get("C:\\Users\\Nadine\\app\\openmoji\\data\\openmoji.json"));
+	public EmojiResource emojiResource() throws URISyntaxException {
+		return new EmojiResource(getEmojiFilePath("openmoji.csv"));
 	}
+	
+	// get file path of resource 
+    private Path getEmojiFilePath(String pathName) throws URISyntaxException {
+
+        ClassLoader classLoader = getClass().getClassLoader();
+
+        URL resource = classLoader.getResource(pathName);
+        if (resource == null) {
+            throw new IllegalArgumentException("file is not found!");
+        } else {
+            return Paths.get(resource.toURI());
+        }
+
+    }
+    
+    
+	
 }

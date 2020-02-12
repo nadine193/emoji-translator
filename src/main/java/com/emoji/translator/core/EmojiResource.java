@@ -33,7 +33,7 @@ public class EmojiResource {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		return Collections.emptyMap();
+		return Collections.List<String>;
 	}
 
 }
