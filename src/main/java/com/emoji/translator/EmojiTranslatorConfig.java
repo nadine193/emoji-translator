@@ -19,11 +19,11 @@ public class EmojiTranslatorConfig {
 	}
 	
 	// get file path of resource 
-    private Path getEmojiFilePath(String pathName) throws URISyntaxException {
+    private Path getEmojiFilePath(String fileName) throws URISyntaxException {
 
         ClassLoader classLoader = getClass().getClassLoader();
 
-        URL resource = classLoader.getResource(pathName);
+        URL resource = classLoader.getResource(fileName);
         if (resource == null) {
             throw new IllegalArgumentException("file is not found!");
         } else {
