@@ -1,6 +1,7 @@
 package com.emoji.translator.web;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,7 @@ public class EmojiController {
 	}
 	
 	@GetMapping("/getTags")
-	public String getTags(@RequestParam String hexCode) throws IOException {
+	public List<String> getTags(@RequestParam String hexCode) throws IOException {
 		return this.emojiResource.getEmojiTags(hexCode);
 	}
 

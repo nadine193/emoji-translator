@@ -1,5 +1,7 @@
 package com.emoji.translator.core;
 
+import java.util.List;
+
 public class Emoji {
 	
 	// set fields 
@@ -8,10 +10,10 @@ public class Emoji {
 	private String group;
 	private String subgroups;
 	private String description;
-	private String tags;
+	private List<String> tags;
 	
 	// emoji constructor 
-	public Emoji(String hexCode, String group, String subgroups, String description, String tags) {
+	public Emoji(String hexCode, String group, String subgroups, String description, List<String> tags) {
 		this.hexCode = hexCode;
 		this.group = group;
 		this.subgroups = subgroups;
@@ -35,7 +37,7 @@ public class Emoji {
 		return this.description;
 	}
 	
-	public String getTags() {
+	public List<String> getTags() {
 		return this.tags;
 	}
 	
