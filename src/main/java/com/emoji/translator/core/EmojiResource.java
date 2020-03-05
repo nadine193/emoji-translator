@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -20,16 +21,17 @@ public class EmojiResource {
 		this.filePath = filePath;
 	}
 	
-	Map<String, String> hexToDescriptionMap = new HashMap<String, String>();
 	
 	// return emoji description when given hex code
 	public String getEmojiDescription(String hexCode) throws IOException {
 		// load file
-		List<Emoji> emojiList = readEmojiFile();
+		Map<String, Emoji> emojiMap = readEmojiFile();
+		
+		Map<String, String> hexToDescriptionMap = new HashMap<String, String>();
 		
 		// create map of hex code and description
-		for(int i=0; i < emojiList.size(); i++) {
-			hexToDescriptionMap.put(emojiList.get(i).getHexCode(), emojiList.get(i).getDescription());
+		for(Map.Entry<String, Emoji> entry : emojiMap.entrySet()) {
+			hexToDescriptionMap.put(entry.getKey(), entry.getValue().getDescription());
 		}
 
 		// look up the hex code
@@ -40,48 +42,39 @@ public class EmojiResource {
 	
 	Map<String, String> hexToTagsMap = new HashMap<String, String>();
 	
-	// return emoji description when given hex code
+	// return emoji tags when given hex code
 	public String getEmojiTags(String hexCode) throws IOException {
 		// load file
-		List<Emoji> emojiList = readEmojiFile();
+		Map<String, Emoji> emojiMap = readEmojiFile();
 		
-		// create map of hex code and description
-		for(int i=0; i < emojiList.size(); i++) {
-			hexToTagsMap.put(emojiList.get(i).getHexCode(), emojiList.get(i).getTags());
+		// create map of hex code and tags
+		for(Map.Entry<String, Emoji> entry : emojiMap.entrySet()) {
+			hexToTagsMap.put(entry.getKey(), entry.getValue().getTags());
 		}
 
 		// look up the hex code
 		String emojiTags = hexToTagsMap.get(hexCode);
-		// if found, return the emoji description
+		// if found, return the emoji tags
 		return emojiTags;
 	} 
-	/*Map<String, String> tagToHexMap = new HashMap<String, String>();
 	
-	public String getEmojiFromTags(String tags) throws IOException {
-		//load file
-		List<Emoji> emojiList = readEmojiFile();
+	private Map<String, Emoji> readEmojiFile() {
 		
-		//create map of every tag to its emoji, in a many-to-one manner
-		for(int i=0; i<emojiList.size(); i++) {
-			tagToHexMap.put
-		}
-	} */
-	
-	private List<Emoji> readEmojiFile() throws IOException {
-		
-		List<Emoji> emojiList = new ArrayList();
-		
+		List<Emoji> emojiList = new ArrayList<>();
+		Map<String, Emoji> emojiMap = new HashMap<>();
+				
 		try {
 			Stream<String> readLines = Files.lines(filePath);
 			emojiList = readLines.map(line -> line.split(","))
-					 .map(a -> new Emoji(a[1], a[2], a[3], a[4], String.join(",", a[5], a[6])))
-					 .collect(Collectors.toList());
-			
+	                .map(a -> new Emoji(a[1], a[2], a[3], a[4], String.join(",", a[5], a[6])))
+	                .collect(Collectors.toList());
+			emojiMap = emojiList.stream()
+								.collect(Collectors.toMap(Emoji::getHexCode, Function.identity()));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}	
 		
-		return emojiList;
+		return emojiMap;
 	}
 }
 
