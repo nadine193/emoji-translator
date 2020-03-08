@@ -20,14 +20,18 @@ public class EmojiController {
 		this.emojiResource = emojiResource;
 	}
 	
-	@GetMapping("/getEmoji")
-	public String getEmoji(@RequestParam String hexCode) throws IOException {
-		return this.emojiResource.getEmojiDescription(hexCode);
+	@GetMapping("/getDescription")
+	public String getDescription(@RequestParam String emojiIcon) throws IOException {
+		return this.emojiResource.getEmojiDescription(emojiIcon);
 	}
 	
 	@GetMapping("/getTags")
-	public List<String> getTags(@RequestParam String hexCode) throws IOException {
-		return this.emojiResource.getEmojiTags(hexCode);
+	public List<String> getTags(@RequestParam String emojiIcon) throws IOException {
+		return this.emojiResource.getEmojiTags(emojiIcon);
 	}
 
+	@GetMapping("/getTagMatches")
+	public List<String> getTagMatches(@RequestParam String tags) throws IOException {
+		return this.emojiResource.getTagMatches(tags);
+	}
 }
